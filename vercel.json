@@ -3,9 +3,5 @@
   "functions": {
     "api/cfg.js": { "runtime": "edge" },
     "api/book.js": { "runtime": "edge" }
-  },
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/(.*)", "dest": "/public/$1" }
-  ],
+  }
 }
