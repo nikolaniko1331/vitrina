@@ -116,7 +116,7 @@ const SLOTS=['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13
 const MO=['Јануари','Февруари','Март','Април','Мај','Јуни','Јули','Август','Септември','Октомври','Ноември','Декември'];
 let approvalMode=CFG.approvalMode,curTab='today',staffBlocks={};
 let bookings=[{id:1,name:'Ана Петровска',phone:'+389 70 111 222',svc:'Фенирање',staff:1,date:'2026-06-27',time:'10:00',dur:30,status:'confirmed'},{id:2,name:'Марија Јовановска',phone:'+389 71 333 444',svc:'Боење (целосно)',staff:2,date:'2026-06-27',time:'11:00',dur:120,status:'pending'},{id:3,name:'Лена Стефанова',phone:'+389 72 555 666',svc:'Маникир',staff:3,date:'2026-06-27',time:'14:00',dur:60,status:'confirmed'}];
-let nid=10,bkSvc=null,bkDate=null,bkSlot=null,bkStaff=null,bkStep=1,bkCY,bkCM,bkName='',bkPhone='',bkEmail='';
+let nid=10,bkSvc=null,bkDate=null,bkSlot=null,bkStaff=null,bkStep=1,bkCY,bkCM,bkName='',bkPhone='',bkEmail='',bkNote='';
 let schedStaff=1,schedCY,schedCM,schedDay=null,abSvc=null,abDate=null,abSlot=null,abStaff=null,abStep=1,abCY,abCM;
 document.getElementById('s1').src=IMG1;
 document.getElementById('s2').src=IMG2;
@@ -150,7 +150,7 @@ function openModal(type){const el=document.getElementById('modal-body');if(type=
 function bookFromSvc(i){document.getElementById('modal-ov').style.display='none';bkSvc=SVCS[i];bkStep=2;const n=new Date();bkCY=n.getFullYear();bkCM=n.getMonth();startBk()}
 function startBooking(){bkSvc=null;bkDate=null;bkSlot=null;bkStaff=null;bkStep=1;const n=new Date();bkCY=n.getFullYear();bkCM=n.getMonth();startBk()}
 function startBk(){const ov=document.getElementById('bk-ov');ov.style.display='flex';ov.style.alignItems='flex-end';renderBk()}
-function renderBk(){const el=document.getElementById('bk-body');if(!el)return;if(bkStep===1)el.innerHTML=renderBk1();else if(bkStep===2){el.innerHTML=renderBk2();renderBkCal()}else if(bkStep===3)el.innerHTML=renderBk3();else if(bkStep===4)el.innerHTML=renderBk4();else el.innerHTML=renderBkOK()}
+function renderBk(){const el=document.getElementById('bk-body');if(!el)return;if(bkStep===1)el.innerHTML=renderBk1();else if(bkStep===2){el.innerHTML=renderBk2();renderBkCal()}else if(bkStep===3)el.innerHTML=renderBk3();else if(bkStep===4)el.innerHTML=renderBk4();else if(bkStep===5)el.innerHTML=renderBk5();else el.innerHTML=renderBkOK()}
 function prog(s){return`<div style="display:flex;gap:3px;margin-bottom:14px">${Array.from({length:5},(_,i)=>`<div style="flex:1;height:3px;border-radius:2px;background:${i<s?P:'#e8dfe9'}"></div>`).join('')}</div>`}
 function renderBk1(){return`<div style="padding-top:4px">${prog(1)}<div style="font-family:'Playfair Display',serif;font-size:18px;color:${DK};margin-bottom:3px">Одбери услуга</div><div style="font-size:11px;color:#bbb;margin-bottom:14px">Чекор 1 од 5</div>${SVCS.map((s,i)=>{const sel=bkSvc===s;const sc=s.pool.map(id=>sbn(id)).map(st=>`<div style="width:20px;height:20px;border-radius:50%;background:${st.color};display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:600">${st.initials}</div>`).join('');return`<div onclick="selSvc(${i})" style="margin-bottom:7px;padding:11px 13px;border-radius:10px;cursor:pointer;border:${sel?`2px solid ${P}`:'1px solid #ede5ee'};background:${sel?PT:'#fff'}"><div style="display:flex;justify-content:space-between"><div style="font-size:13px;font-weight:500;color:${DK}">${s.name}</div><div style="font-size:12px;color:${A};font-weight:500">${s.price}</div></div><div style="display:flex;justify-content:space-between;margin-top:5px"><div style="font-size:11px;color:#bbb">${s.dur} мин</div><div style="display:flex;gap:3px">${sc}</div></div></div>`}).join('')}<button onclick="bkNext()" ${!bkSvc?'disabled':''} style="width:100%;margin-top:8px;padding:13px;border-radius:10px;border:none;background:${bkSvc?P:'#e8dfe9'};color:${bkSvc?'#fff':'#bbb'};font-size:14px;font-weight:500;cursor:${bkSvc?'pointer':'default'};font-family:'Inter',sans-serif">Следно</button></div>`}
 function selSvc(i){bkSvc=SVCS[i];renderBk()}
@@ -175,39 +175,32 @@ function bkSub4(){
     if(!em||!em.includes('@'))document.getElementById('bk-e').style.border='1.5px solid #c0392b';
     return;
   }
-  bkName=n;bkPhone=pw;bkEmail=em;
-  const btn=document.querySelector('[onclick="bkSub4()"]');
+  bkName=n;bkPhone=pw;bkEmail=em;bkNote=note||'';
+  bkStep=5;renderBk();
+}
+function renderBk5(){return`<div style="padding-top:4px;text-align:center">${prog(5)}<div style="width:56px;height:56px;border-radius:50%;background:${PT};display:flex;align-items:center;justify-content:center;margin:8px auto 14px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="${P}" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18" stroke-linecap="round" stroke-width="3"/></svg></div><div style="font-family:'Playfair Display',serif;font-size:18px;color:${DK};margin-bottom:4px">Потврди телефон</div><div style="font-size:12px;color:#bbb;margin-bottom:22px">Испративме SMS на<br><strong style="color:${DK}">${bkPhone}</strong></div><div style="display:flex;gap:8px;justify-content:center;margin-bottom:20px">${[0,1,2,3].map(i=>`<input id="otp-${i}" type="number" maxlength="1" inputmode="numeric" oninput="otpIn(this,${i})" onkeydown="otpBack(event,${i})" style="width:52px;height:56px;text-align:center;font-size:22px;font-weight:500;border:1.5px solid #ddd;border-radius:10px;outline:none;font-family:'Inter',sans-serif"/>`).join('')}</div><div id="otp-err" style="display:none;font-size:11px;color:#c0392b;margin-bottom:8px">Погрешен код. Demo: 1234</div><button onclick="otpVerify()" style="width:100%;padding:13px;border-radius:10px;border:none;background:${P};color:#fff;font-size:14px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif">Потврди</button><button onclick="bkBack()" style="width:100%;margin-top:8px;padding:8px;border:none;background:transparent;color:#bbb;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif">Промени телефон</button></div>`}
+function otpIn(inp,i){inp.value=inp.value.slice(-1);if(inp.value&&i<3)document.getElementById('otp-'+(i+1))?.focus()}
+function otpBack(e,i){if(e.key==='Backspace'&&!e.target.value&&i>0)document.getElementById('otp-'+(i-1))?.focus()}
+function otpVerify(){
+  const code=[0,1,2,3].map(i=>document.getElementById('otp-'+i)?.value||'').join('');
+  if(code!=='1234'){document.getElementById('otp-err').style.display='block';return;}
+  const btn=document.querySelector('[onclick="otpVerify()"]');
   if(btn){btn.disabled=true;btn.textContent='...';}
   const startDT=bkDate+'T'+bkSlot+':00';
   const endDT=new Date(new Date(startDT).getTime()+bkSvc.dur*60000).toISOString();
   fetch('/api/book',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      slug:slug,
-      service_id:bkSvc.id,
-      staff_id:bkStaff,
-      starts_at:startDT,
-      ends_at:endDT,
-      client_name:n,
-      client_phone:pw,
-      client_email:em,
-      note:note||''
-    })
-  }).then(r=>r.json()).then(data=>{
-    approvalMode=CFG.approvalMode||false;
-    bookings.push({id:nid++,name:n,phone:pw,svc:bkSvc.name,staff:bkStaff,date:bkDate,time:bkSlot,dur:bkSvc.dur,status:approvalMode?'pending':'confirmed'});
+    body:JSON.stringify({slug:slug,service_id:bkSvc.id,staff_id:bkStaff,starts_at:startDT,ends_at:endDT,client_name:bkName,client_phone:bkPhone,client_email:bkEmail,note:bkNote})
+  }).then(r=>r.json()).then(()=>{
+    bookings.push({id:nid++,name:bkName,phone:bkPhone,svc:bkSvc.name,staff:bkStaff,date:bkDate,time:bkSlot,dur:bkSvc.dur,status:approvalMode?'pending':'confirmed'});
     bkStep=6;renderBk();
   }).catch(e=>{
     console.error('Book error',e);
-    if(btn){btn.disabled=false;btn.textContent='Потврди →';}
-    alert('Грешка при резервација. Обиди се повторно.');
+    if(btn){btn.disabled=false;btn.textContent='Потврди';}
+    document.getElementById('otp-err').style.display='block';
   });
 }
-function renderBk5(){return`<div style="padding-top:4px;text-align:center">${prog(5)}<div style="width:56px;height:56px;border-radius:50%;background:${PT};display:flex;align-items:center;justify-content:center;margin:8px auto 14px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="${P}" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18" stroke-linecap="round" stroke-width="3"/></svg></div><div style="font-family:'Playfair Display',serif;font-size:18px;color:${DK};margin-bottom:4px">Потврди телефон</div><div style="font-size:12px;color:#bbb;margin-bottom:22px">Испративме SMS на<br><strong style="color:${DK}">${bkPhone}</strong></div><div style="display:flex;gap:8px;justify-content:center;margin-bottom:20px">${[0,1,2,3].map(i=>`<input id="otp-${i}" type="number" maxlength="1" inputmode="numeric" oninput="otpIn(this,${i})" onkeydown="otpBack(event,${i})" style="width:52px;height:56px;text-align:center;font-size:22px;font-weight:500;border:1.5px solid #ddd;border-radius:10px;outline:none;font-family:'Inter',sans-serif"/>`).join('')}</div><div id="otp-err" style="display:none;font-size:11px;color:#c0392b;margin-bottom:8px">Погрешен код. Demo: 1234</div><button onclick="otpVerify()" style="width:100%;padding:13px;border-radius:10px;border:none;background:${P};color:#fff;font-size:14px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif">Потврди</button><button onclick="bkBack()" style="width:100%;margin-top:8px;padding:8px;border:none;background:transparent;color:#bbb;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif">Промени телефон</button></div>`}
-function otpIn(inp,i){inp.value=inp.value.slice(-1);if(inp.value&&i<3)document.getElementById('otp-'+(i+1))?.focus()}
-function otpBack(e,i){if(e.key==='Backspace'&&!e.target.value&&i>0)document.getElementById('otp-'+(i-1))?.focus()}
-function otpVerify(){const code=[0,1,2,3].map(i=>document.getElementById('otp-'+i)?.value||'').join('');if(code==='1234'){bookings.push({id:nid++,name:bkName,phone:bkPhone,svc:bkSvc.name,staff:bkStaff,date:bkDate,time:bkSlot,dur:bkSvc.dur,status:approvalMode?'pending':'confirmed'});bkStep=6;renderBk()}else document.getElementById('otp-err').style.display='block'}
 function renderBkOK(){const ok=!approvalMode;return`<div style="padding:24px 0;text-align:center"><div style="width:64px;height:64px;border-radius:50%;background:${ok?PT:'#FFF8E1'};display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="${ok?A:'#FF9800'}" stroke-width="2.5">${ok?'<polyline points="20 6 9 17 4 12"/>':'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>'}</svg></div><div style="font-family:'Playfair Display',serif;font-size:20px;color:${DK};margin-bottom:6px">${ok?'Резервирано!':'На чекање'}</div><div style="font-size:13px;color:#888;margin-bottom:22px;line-height:1.6">${ok?`Твојот термин е потврден.<br>Ќе добиеш потсетник 1 ч. пред.<br><span style='font-size:11px;color:#b89fba'>Потврда испратена на ${bkEmail}</span>`:'Резервацијата е примена.<br>Салонот ќе те контактира за потврда.'}</div><div style="background:${PT};border-radius:10px;padding:13px 14px;text-align:left;margin-bottom:20px"><div style="font-size:12px;font-weight:500;color:${DK};margin-bottom:3px">${bkSvc.name}</div><div style="font-size:12px;color:#777">${bkDate} · ${bkSlot}</div><div style="font-size:11px;color:#b89fba;margin-top:4px">Откажување до 2ч пред термин</div></div><button onclick="document.getElementById('bk-ov').style.display='none'" style="width:100%;padding:13px;border-radius:10px;border:none;background:${P};color:#fff;font-size:14px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif">Затвори</button></div>`}
 function bkNext(){bkStep++;renderBk()}
 function bkBack(){bkStep=Math.max(1,bkStep-1);renderBk()}
