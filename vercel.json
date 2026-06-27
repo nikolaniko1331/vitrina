@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "functions": {
+    "api/cfg.js": { "runtime": "edge" },
+    "api/book.js": { "runtime": "edge" }
+  },
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/public/$1" }
+  ],
+  "env": {
+    "SUPABASE_URL": "@supabase-url",
+    "SUPABASE_ANON_KEY": "@supabase-anon-key",
+    "RESEND_API_KEY": "@resend-api-key"
+  }
+}
