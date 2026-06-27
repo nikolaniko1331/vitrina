@@ -1,7 +1,3 @@
 {
-  "version": 2,
-  "functions": {
-    "api/cfg.js": { "runtime": "edge" },
-    "api/book.js": { "runtime": "edge" }
-  }
+  "version": 2
 }
