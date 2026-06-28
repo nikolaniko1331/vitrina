@@ -52,13 +52,13 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     </div>
   </div>
   <div id="admin-view" style="display:none;flex:1;flex-direction:column;overflow-y:auto">
-    <div style="padding:8px 16px;background:#F3EBF4;border-bottom:1px solid #e8dfe9"><div style="font-size:11px;color:#6B3F6E;text-align:center;font-weight:500;letter-spacing:.5px">АДМИНИСТРАТОРСКИ ПАНЕЛ</div></div>
+    <div style="padding:8px 16px;background:#F3EBF4;border-bottom:1px solid #e8dfe9;display:flex;align-items:center;justify-content:center;gap:8px"><div style="font-size:11px;color:#6B3F6E;font-weight:500;letter-spacing:.5px">АДМИНИСТРАТОРСКИ ПАНЕЛ</div><div id="new-bk-badge" style="display:none;min-width:18px;height:18px;background:#e53935;border-radius:9px;font-size:10px;font-weight:700;color:#fff;align-items:center;justify-content:center;padding:0 5px">0</div></div>
     <div style="margin:12px 16px 0;padding:12px 14px;background:#fff;border-radius:10px;border:1px solid #ede5ee;display:flex;align-items:center;justify-content:space-between"><div><div style="font-size:13px;font-weight:500;color:#1A0F1B">Рачно одобрување</div><div style="font-size:11px;color:#bbb">Нови резервации чекаат потврда</div></div><div id="apr-tog" onclick="toggleApproval()" style="width:42px;height:24px;border-radius:12px;background:#ccc;position:relative;cursor:pointer"><div id="apr-knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left 200ms"></div></div></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px">
       <button onclick="openSched()" style="padding:14px 10px;background:#fff;border-radius:10px;border:1px solid #ede5ee;cursor:pointer;text-align:left;font-family:'Inter',sans-serif"><div style="margin-bottom:6px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B3F6E" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div style="font-size:12px;font-weight:500;color:#1A0F1B">Распоред</div><div style="font-size:10px;color:#bbb">Блокирај термини</div></button>
       <button onclick="openAdminBook()" style="padding:14px 10px;background:#fff;border-radius:10px;border:1px solid #ede5ee;cursor:pointer;text-align:left;font-family:'Inter',sans-serif"><div style="margin-bottom:6px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B3F6E" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div style="font-size:12px;font-weight:500;color:#1A0F1B">Резервирај</div><div style="font-size:10px;color:#bbb">Рачна резервација</div></button>
     </div>
-    <div style="padding:0 16px 8px"><div style="display:flex;background:#f5eff6;border-radius:8px;padding:2px"><button id="tab-today" onclick="setTab('today')" style="flex:1;padding:6px;border-radius:6px;border:none;background:#fff;font-size:11px;font-weight:500;color:#1A0F1B;cursor:pointer;font-family:'Inter',sans-serif">Денес</button><button id="tab-tmr" onclick="setTab('tmr')" style="flex:1;padding:6px;border-radius:6px;border:none;background:transparent;font-size:11px;color:#999;cursor:pointer;font-family:'Inter',sans-serif">Утре</button><button id="tab-week" onclick="setTab('week')" style="flex:1;padding:6px;border-radius:6px;border:none;background:transparent;font-size:11px;color:#999;cursor:pointer;font-family:'Inter',sans-serif">Оваа недела</button></div></div>
+    <div style="padding:0 16px 8px"><div style="display:flex;background:#f5eff6;border-radius:8px;padding:2px"><button id="tab-today" onclick="setTab('today');clearNewBadge()" style="flex:1;padding:6px;border-radius:6px;border:none;background:#fff;font-size:11px;font-weight:500;color:#1A0F1B;cursor:pointer;font-family:'Inter',sans-serif">Денес</button><button id="tab-tmr" onclick="setTab('tmr');clearNewBadge()" style="flex:1;padding:6px;border-radius:6px;border:none;background:transparent;font-size:11px;color:#999;cursor:pointer;font-family:'Inter',sans-serif">Утре</button><button id="tab-week" onclick="setTab('week');clearNewBadge()" style="flex:1;padding:6px;border-radius:6px;border:none;background:transparent;font-size:11px;color:#999;cursor:pointer;font-family:'Inter',sans-serif">Оваа недела</button></div></div>
     <div id="apt-list" style="padding:0 16px 16px;display:flex;flex-direction:column;gap:8px"></div>
   </div>
   <div id="login-ov" onclick="this.style.display='none'" style="display:none;position:absolute;inset:0;background:rgba(26,15,27,.65);z-index:50;align-items:center;justify-content:center"><div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:24px;width:300px;margin:0 20px"><div style="font-family:'Playfair Display',serif;font-size:18px;color:#1A0F1B;margin-bottom:4px">Admin пристап</div><div style="font-size:11px;color:#bbb;margin-bottom:18px">Салон Миа · Управување</div><input id="lu" type="text" placeholder="Корисничко ime" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px;margin-bottom:8px;font-family:'Inter',sans-serif;outline:none"/><input id="lp" type="password" placeholder="Лозинка" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px;margin-bottom:14px;font-family:'Inter',sans-serif;outline:none"/><div id="lerr" style="display:none;font-size:11px;color:#c0392b;margin-bottom:8px">Погрешни податоци</div><button onclick="doLogin()" style="width:100%;padding:12px;background:#6B3F6E;border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif">Влези</button><button onclick="document.getElementById('login-ov').style.display='none'" style="width:100%;padding:8px;border:none;background:transparent;color:#bbb;font-size:12px;cursor:pointer;margin-top:6px;font-family:'Inter',sans-serif">Откажи</button></div></div>
@@ -121,7 +121,7 @@ const SLOTS=['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13
 const MO=['Јануари','Февруари','Март','Април','Мај','Јуни','Јули','Август','Септември','Октомври','Ноември','Декември'];
 let approvalMode=CFG.approvalMode,curTab='today',staffBlocks={};
 let bookings=[{id:1,name:'Ана Петровска',phone:'+389 70 111 222',svc:'Фенирање',staff:1,date:'2026-06-27',time:'10:00',dur:30,status:'confirmed'},{id:2,name:'Марија Јовановска',phone:'+389 71 333 444',svc:'Боење (целосно)',staff:2,date:'2026-06-27',time:'11:00',dur:120,status:'pending'},{id:3,name:'Лена Стефанова',phone:'+389 72 555 666',svc:'Маникир',staff:3,date:'2026-06-27',time:'14:00',dur:60,status:'confirmed'}];
-let nid=10,bkSvc=null,bkDate=null,bkSlot=null,bkStaff=null,bkStep=1,bkCY,bkCM,bkName='',bkPhone='',bkEmail='',bkNote='',bkBookingId=null;
+let nid=10,bkSvc=null,bkDate=null,bkSlot=null,bkStaff=null,bkStep=1,bkCY,bkCM,bkName='',bkPhone='',bkEmail='',bkNote='',bkBookingId=null,newBookingCount=0;
 let schedStaff=1,schedCY,schedCM,schedDay=null,abSvc=null,abDate=null,abSlot=null,abStaff=null,abStep=1,abCY,abCM;
 document.getElementById('s1').src=IMG1;
 document.getElementById('s2').src=IMG2;
@@ -203,10 +203,37 @@ function confirmAptDB(id){
 function cancelAptDB(id){
   getSupabase().from('bookings').update({status:'cancelled'}).eq('id',id).then(()=>{document.getElementById('apt-ov').style.display='none';renderAptList();});
 }
+function playChime(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    [0,150,300].forEach((delay,i)=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.type='sine';o.frequency.value=[880,1047,1319][i];
+      g.gain.setValueAtTime(0,ctx.currentTime+delay/1000);
+      g.gain.linearRampToValueAtTime(0.18,ctx.currentTime+delay/1000+0.02);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+delay/1000+0.5);
+      o.start(ctx.currentTime+delay/1000);
+      o.stop(ctx.currentTime+delay/1000+0.6);
+    });
+  }catch(e){}
+}
+function updateNewBadge(){
+  const b=document.getElementById('new-bk-badge');
+  if(!b)return;
+  if(newBookingCount>0){b.textContent=newBookingCount;b.style.display='flex';}
+  else{b.style.display='none';}
+}
+function clearNewBadge(){newBookingCount=0;updateNewBadge();}
 function subscribeBookings(){
   const sb=getSupabase();if(!sb||!CFG.id)return;
   sb.channel('bookings-'+CFG.id)
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'bookings',filter:'business_id=eq.'+CFG.id},()=>{renderAptList();})
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'bookings',filter:'business_id=eq.'+CFG.id},()=>{
+      newBookingCount++;
+      updateNewBadge();
+      playChime();
+      renderAptList();
+    })
     .subscribe();
 }
 function openAptDetail(id){const b=bookings.find(x=>x.id===id);if(!b)return;const st=sbn(b.staff);const sc=b.status==='confirmed'?'#4CAF50':'#FF9800';const sl=b.status==='confirmed'?'Потврдена':'На чекање';let acts='';if(b.status==='pending')acts=`<div style="display:flex;gap:8px;margin-top:16px"><button onclick="confirmApt(${id})" style="flex:1;padding:10px;background:${P};border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif">Потврди</button><button onclick="cancelApt(${id})" style="flex:1;padding:10px;background:transparent;border:1px solid #e53935;border-radius:8px;color:#e53935;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif">Откажи</button></div>`;else if(b.status==='confirmed')acts=`<button onclick="cancelApt(${id})" style="width:100%;margin-top:16px;padding:10px;background:transparent;border:1px solid #e53935;border-radius:8px;color:#e53935;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif">Откажи термин</button>`;document.getElementById('apt-detail').innerHTML=`<div style="font-size:16px;font-weight:500;color:${DK};margin-bottom:4px">${b.name}</div><div style="font-size:11px;color:${sc};background:${sc}22;display:inline-block;padding:2px 10px;border-radius:10px;margin-bottom:16px">${sl}</div><div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:#555"><div><span style="font-size:10px;color:#bbb;display:block;margin-bottom:2px">Услуга</span>${b.svc}</div><div><span style="font-size:10px;color:#bbb;display:block;margin-bottom:2px">Датум и час</span>${b.date} · ${b.time}</div><div><span style="font-size:10px;color:#bbb;display:block;margin-bottom:2px">Стилист</span>${st.name}</div><div><span style="font-size:10px;color:#bbb;display:block;margin-bottom:2px">Телефон</span>${b.phone}</div></div>${acts}`;const el=document.getElementById('apt-ov');el.style.display='flex';el.style.alignItems='flex-end'}
