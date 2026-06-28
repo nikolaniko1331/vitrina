@@ -24,7 +24,7 @@ export default async function handler(req) {
     return new Response(JSON.stringify({ error: 'method not allowed' }), { status: 405 });
   }
 
-  const { slug, subscription } = await req.json();
+  const { slug, subscription, booking_id } = await req.json();
   if (!slug || !subscription?.endpoint) {
     return new Response(JSON.stringify({ error: 'missing fields' }), { status: 400 });
   }
@@ -47,6 +47,7 @@ export default async function handler(req) {
       endpoint: subscription.endpoint,
       p256dh: subscription.keys.p256dh,
       auth: subscription.keys.auth,
+      booking_id: booking_id || null,
     }, { onConflict: 'endpoint' });
 
   if (error) {

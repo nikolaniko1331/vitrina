@@ -72,12 +72,19 @@ export default async function handler(req) {
     return new Response(JSON.stringify({ error: 'VAPID keys not configured' }), { status: 500 });
   }
 
-  const { business_id, title, body } = await req.json();
+  const { business_id, booking_id, title, body } = await req.json();
 
-  const { data: subs } = await supabase
-    .from('push_subscriptions')
-    .select('endpoint, p256dh, auth')
-    .eq('business_id', business_id);
+  let query = supabase.from('push_subscriptions').select('endpoint, p256dh, auth');
+
+  if (booking_id) {
+    // Client reminder — send only to the specific booking's device
+    query = query.eq('booking_id', booking_id);
+  } else {
+    // New booking alert — send only to owner devices (booking_id IS NULL)
+    query = query.eq('business_id', business_id).is('booking_id', null);
+  }
+
+  const { data: subs } = await query;
 
   if (!subs?.length) {
     return new Response(JSON.stringify({ sent: 0 }), { status: 200 });

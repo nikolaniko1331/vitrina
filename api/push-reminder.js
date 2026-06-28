@@ -1,5 +1,5 @@
 // GET /api/push-reminder  (called by Vercel Cron daily at 08:00 UTC)
-// Sends a push notification to all subscribed devices for every booking starting tomorrow.
+// Sends a 24h reminder to each client who opted in for their specific booking.
 import { createClient } from '@supabase/supabase-js';
 
 export const config = { runtime: 'edge' };
@@ -25,7 +25,7 @@ export default async function handler(req) {
 
   const { data: bookings, error } = await supabase
     .from('bookings')
-    .select('id, business_id, client_name, starts_at')
+    .select('id, client_name, starts_at')
     .in('status', ['pending', 'confirmed'])
     .gte('starts_at', dateFrom)
     .lte('starts_at', dateTo);
@@ -38,32 +38,20 @@ export default async function handler(req) {
     return new Response(JSON.stringify({ sent: 0, message: 'No bookings tomorrow' }), { status: 200 });
   }
 
-  // Group bookings by business so we send one push per business (not per booking)
-  const byBusiness = {};
-  for (const b of bookings) {
-    if (!byBusiness[b.business_id]) byBusiness[b.business_id] = [];
-    byBusiness[b.business_id].push(b);
-  }
-
   const baseUrl = process.env.APP_URL || 'https://vitrina-fze5.vercel.app';
+
+  // Send one reminder per booking — push-send routes by booking_id to the client's device only
   const results = await Promise.allSettled(
-    Object.entries(byBusiness).map(async ([businessId, bks]) => {
-      const count = bks.length;
-      const first = bks[0];
-      const time = first.starts_at.slice(11, 16); // HH:MM
-
-      const title = count === 1
-        ? `Потсетник: термин утре во ${time}`
-        : `Потсетник: ${count} термини утре`;
-
-      const body = count === 1
-        ? `${first.client_name} · ${time}`
-        : bks.map(b => `${b.client_name} ${b.starts_at.slice(11,16)}`).join(', ');
-
+    bookings.map(b => {
+      const time = b.starts_at.slice(11, 16);
       return fetch(`${baseUrl}/api/push-send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ business_id: businessId, title, body }),
+        body: JSON.stringify({
+          booking_id: b.id,
+          title: `Потсетник: термин утре во ${time}`,
+          body: `Не заборавај го твојот термин утре во ${time} 📅`,
+        }),
       });
     })
   );
