@@ -96,6 +96,13 @@ async function loadCFG(){
       price:s.price?Math.round(s.price).toLocaleString('mk-MK')+' ден':'',
       pool:s.pool
     }));
+    // update brand header
+    if(data.name){
+      const bn=document.getElementById('brand-name');
+      if(bn)bn.textContent=data.name.toUpperCase();
+      const bt=document.getElementById('brand-tag');
+      if(bt)bt.textContent=(data.subtitle||'')+' · '+(data.city||'');
+    }
     // update hero text
     if(data.name){
       const el=document.getElementById('hero-tagline');
