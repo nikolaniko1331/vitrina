@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Резервација — Витрина</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #F3EBF4;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px 24px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 4px 24px rgba(107,63,110,0.10);
+    }
+    .logo {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #C9A96E;
+      margin-bottom: 20px;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    .status-confirmed { background: #e8f5e9; color: #2e7d32; }
+    .status-pending   { background: #fff8e1; color: #7d5a00; }
+    .status-cancelled { background: #fce4ec; color: #b71c1c; }
+    .salon-name {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1A0F1B;
+      margin-bottom: 4px;
+    }
+    .divider {
+      height: 1px;
+      background: #f0e8f1;
+      margin: 20px 0;
+    }
+    .row {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .field label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #bbb;
+      display: block;
+      margin-bottom: 3px;
+    }
+    .field span {
+      font-size: 14px;
+      color: #1A0F1B;
+      font-weight: 500;
+    }
+    .highlight-box {
+      background: #F3EBF4;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+    }
+    .highlight-box .date-big {
+      font-size: 18px;
+      font-weight: 600;
+      color: #6B3F6E;
+    }
+    .highlight-box .time-big {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1A0F1B;
+      line-height: 1.1;
+    }
+    .contact-btn {
+      display: block;
+      width: 100%;
+      margin-top: 24px;
+      padding: 14px;
+      background: #6B3F6E;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .note-box {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: #fffdf5;
+      border: 1px solid #e8d9a0;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #7d5a00;
+      text-align: center;
+    }
+    .loading, .error {
+      text-align: center;
+      padding: 40px 0;
+      color: #bbb;
+      font-size: 14px;
+    }
+    .error { color: #e53935; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .dot-confirmed { background: #4CAF50; }
+    .dot-pending   { background: #FF9800; }
+    .dot-cancelled { background: #e53935; }
+  </style>
+</head>
+<body>
+<div class="card" id="card">
+  <div class="loading">Вчитување...</div>
+</div>
+
+<script>
+const SUPA_URL = 'https://zehfmiadttzekgeogysb.supabase.co';
+const SUPA_KEY = 'sb_publishable_eLhXVOU3ObdyRTFHIJ7PNg_ueZuBHP9';
+const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+
+const id = new URLSearchParams(location.search).get('id');
+const card = document.getElementById('card');
+
+const STATUS_LABEL = { confirmed: 'Потврдена', pending: 'На чекање', cancelled: 'Откажана' };
+const STATUS_CLASS = { confirmed: 'status-confirmed', pending: 'status-pending', cancelled: 'status-cancelled' };
+const DOT_CLASS    = { confirmed: 'dot-confirmed',    pending: 'dot-pending',    cancelled: 'dot-cancelled' };
+
+async function load() {
+  if (!id) { card.innerHTML = '<div class="error">Нема ID на резервација.</div>'; return; }
+
+  const { data: b, error } = await sb
+    .from('bookings')
+    .select(`
+      id, status, starts_at, ends_at, client_name, client_phone, note,
+      businesses (name, config),
+      services (name),
+      staff (name)
+    `)
+    .eq('id', id)
+    .single();
+
+  if (error || !b) {
+    card.innerHTML = '<div class="error">Резервацијата не е пронајдена.</div>';
+    return;
+  }
+
+  const biz    = b.businesses;
+  const status = b.status;
+  const date   = new Date(b.starts_at);
+  const dateStr = date.toLocaleDateString('mk-MK', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const timeStr = date.toLocaleTimeString('mk-MK', { hour: '2-digit', minute: '2-digit' });
+  const phone   = biz?.config?.phone ? `tel:${biz.config.phone}` : null;
+
+  card.innerHTML = `
+    <div class="logo">Витрина</div>
+    <div class="status-badge ${STATUS_CLASS[status]}">
+      <span class="dot ${DOT_CLASS[status]}"></span>
+      ${STATUS_LABEL[status] || status}
+    </div>
+    <div class="salon-name">${biz?.name || 'Салон'}</div>
+    <div class="divider"></div>
+
+    <div class="highlight-box">
+      <div class="date-big">${dateStr}</div>
+      <div class="time-big">${timeStr}</div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>Услуга</label>
+        <span>${b.services?.name || '—'}</span>
+      </div>
+      <div class="field">
+        <label>Стилист</label>
+        <span>${b.staff?.name || '—'}</span>
+      </div>
+      <div class="field">
+        <label>Клиент</label>
+        <span>${b.client_name}</span>
+      </div>
+      <div class="field">
+        <label>Телефон</label>
+        <span>${b.client_phone}</span>
+      </div>
+    </div>
+
+    ${status !== 'cancelled' ? `
+    <div class="note-box">
+      За промени или откажување, контактирајте го салонот.
+    </div>
+    ${phone ? `<a class="contact-btn" href="${phone}">Јави се на салонот</a>` : ''}
+    ` : `
+    <div class="note-box" style="color:#e53935;border-color:#f5c6cb;background:#fce4ec">
+      Овој термин е откажан.
+    </div>
+    `}
+  `;
+}
+
+load();
+</script>
+</body>
+</html>

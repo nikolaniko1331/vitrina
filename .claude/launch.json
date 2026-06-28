@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "vitrina",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "public"],
+      "port": 7788,
+      "autoPort": true
+    }
+  ]
+}
