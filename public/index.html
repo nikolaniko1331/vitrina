@@ -27,11 +27,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     </div>
   </div>
   <div id="site-view" style="flex:1;display:flex;flex-direction:column;overflow-y:auto">
-    <div style="position:relative;height:260px;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,#1A0F1B 0%,#3D1F42 40%,#6B3F6E 70%,#8B5A2B 100%)">
+    <div id="hero-section" style="position:relative;height:260px;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,#1A0F1B 0%,#3D1F42 40%,#6B3F6E 70%,#8B5A2B 100%)">
       <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.18" viewBox="0 0 390 260" preserveAspectRatio="none"><ellipse cx="320" cy="30" rx="160" ry="160" fill="none" stroke="#C9A96E" stroke-width="1"/><ellipse cx="320" cy="30" rx="110" ry="110" fill="none" stroke="#C9A96E" stroke-width=".6"/><ellipse cx="-20" cy="240" rx="140" ry="140" fill="none" stroke="#C9A96E" stroke-width=".8"/></svg>
       <div style="position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#C9A96E 30%,#E8C97E 60%,transparent)"></div>
       <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center">
-        <div style="position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding-top:18px;pointer-events:none"><div style="font-family:'Playfair Display',serif;font-size:44px;font-weight:600;color:#C9A96E;opacity:.25;letter-spacing:5px;white-space:nowrap;user-select:none">САЛОН МИА</div></div><!-- LOGO PLACEHOLDER: swap this svg for client logo (40x40 recommended) --><div style="width:48px;height:48px;border-radius:50%;border:1px solid rgba(201,169,110,0.4);display:flex;align-items:center;justify-content:center;margin-bottom:14px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.9)" stroke-width="1.5"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></div>
+        <div style="position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding-top:18px;pointer-events:none"><div style="font-family:'Playfair Display',serif;font-size:44px;font-weight:600;color:#C9A96E;opacity:.25;letter-spacing:5px;white-space:nowrap;user-select:none" id="hero-watermark">САЛОН МИА</div></div><!-- LOGO PLACEHOLDER: swap this svg for client logo (40x40 recommended) --><div style="width:48px;height:48px;border-radius:50%;border:1px solid rgba(201,169,110,0.4);display:flex;align-items:center;justify-content:center;margin-bottom:14px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(201,169,110,0.9)" stroke-width="1.5"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></div>
         <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:500;color:#fff;line-height:1.2;margin-bottom:10px" id="hero-tagline">Убавина со страст</div>
         <div style="width:40px;height:1px;background:linear-gradient(90deg,transparent,#C9A96E,transparent);margin-bottom:10px"></div>
         <div style="font-size:12px;color:rgba(255,255,255,.7);letter-spacing:1px" id="hero-subtitle">Стручни стилисти · Луксузно искуство</div>
@@ -47,8 +47,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     <div style="padding:16px"><button onclick="startBooking()" style="width:100%;padding:14px;border-radius:30px;border:2px solid #6B3F6E;background:transparent;color:#6B3F6E;font-size:15px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.5px" onmouseover="this.style.background='#F3EBF4'" onmouseout="this.style.background='transparent'" id="cta-main">Резервирај термин</button></div>
     <div style="flex:1"></div>
     <div style="padding:12px 16px;background:#fff;border-top:1px solid #f5eff6;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
-      <div style="display:flex;align-items:center;gap:6px"><div class="dot-open" style="width:8px;height:8px;border-radius:50%;background:#4CAF50"></div><span style="font-size:12px;color:#555" id="open-label">Отворено</span><span style="font-size:11px;color:#bbb">· до 19:00</span></div>
-      <div style="font-size:12px;color:#555"><span style="color:#C9A96E">★</span> 4.9 <span style="color:#bbb">(127)</span></div>
+      <div style="display:flex;align-items:center;gap:6px"><div class="dot-open" style="width:8px;height:8px;border-radius:50%;background:#4CAF50"></div><span style="font-size:12px;color:#555" id="open-label">Отворено</span><span id="open-hours" style="font-size:11px;color:#bbb">· до 19:00</span></div>
+      <div style="font-size:12px;color:#555"><span style="color:#C9A96E">★</span> <span id="hero-rating">4.9</span> <span id="hero-reviews" style="color:#bbb">(127)</span></div>
     </div>
   </div>
   <div id="admin-view" style="display:none;flex:1;flex-direction:column;overflow-y:auto">
@@ -88,6 +88,8 @@ async function loadCFG(){
     const data=await res.json();
     CFG=data;
     P=CFG.primaryColor||P;PT=CFG.primaryTint||PT;A=CFG.accentColor||A;DK=CFG.darkColor||DK;
+    const hs=document.getElementById('hero-section');
+    if(hs&&CFG.primaryColor)hs.style.background='linear-gradient(135deg,'+DK+' 0%,'+P+'99 40%,'+P+' 70%,'+A+'44 100%)';
     STAFF=(data.staff||[]).map(s=>({...s,initials:initials(s.name)}));
     SVCS=(data.services||[]).map(s=>({
       ...s,
@@ -118,9 +120,13 @@ async function loadCFG(){
     }
     // re-render open hours badge
     const oh=document.getElementById('open-hours');
-    if(oh&&data.hours)oh.textContent=data.hours;
+    if(oh&&data.hours)oh.textContent='· '+data.hours;
     const ratingEl=document.getElementById('hero-rating');
-    if(ratingEl&&data.rating)ratingEl.textContent=data.rating+'★';
+    if(ratingEl&&data.rating)ratingEl.textContent=data.rating;
+    const revEl=document.getElementById('hero-reviews');
+    if(revEl&&data.reviews)revEl.textContent='('+data.reviews+')';
+    const wm=document.getElementById('hero-watermark');
+    if(wm&&data.name)wm.textContent=data.name.toUpperCase();
     applyLang();
   }catch(e){console.error('CFG load failed',e)}
 }
@@ -147,7 +153,7 @@ function tabDates(tab){const t=new Date();if(tab==='today')return[fd(t)];if(tab=
 const T={МК:{nav_about:'За нас',nav_services:'Услуги',nav_contact:'Контакт',tagline:'Убавина со страст',subtitle:'Стручни стилисти · Луксузно искуство',cta:'Резервирај термин',open:'Отворено',bk_svc:'Одбери услуга',bk_date:'Одбери датум',bk_slot:'Одбери термин',bk_data:'Твои податоци',bk_otp:'Потврди телефон',bk_ok:'Резервирано!',bk_pending:'На чекање',bk_next:'Следно',bk_back:'Назад',bk_confirm:'Потврди →',bk_close:'Затвори',ph_name:'Ime i prezime',ph_phone:'+389 7X XXX XXX',ph_email:'email@primer.mk (опционално)',ph_note:'Напомена (опционално)',otp_sent:'Испративме SMS на',otp_err:'Погрешен код. Demo: 1234',otp_change:'Промени телефон',confirmed:'Твојот термин е потврден.',reminder:'Ќе добиеш потсетник 1 ч. пред.',email_sent:'Потврда испратена на',cancel_policy:'Откажување до 2ч пред термин',pending_msg:'Резервацијата е примена.',salon_contact:'Салонот ќе те контактира за потврда.'},SQ:{nav_about:'Rreth nesh',nav_services:'Shërbimet',nav_contact:'Kontakt',tagline:'Bukuri me pasion',subtitle:'Stilistë profesionistë · Art luksoz',cta:'Rezervo termin',open:'Hapur',bk_svc:'Zgjidhni shërbimin',bk_date:'Zgjidhni datën',bk_slot:'Zgjidhni orarin',bk_data:'Të dhënat tuaja',bk_otp:'Konfirmo telefonin',bk_ok:'Rezervuar!',bk_pending:'Në pritje',bk_next:'Vazhdo',bk_back:'Kthehu',bk_confirm:'Konfirmo →',bk_close:'Mbyll',ph_name:'Emri dhe mbiemri',ph_phone:'+383 4X XXX XXX',ph_email:'email@shembull.com (opsionale)',ph_note:'Shënim (opsionale)',otp_sent:'Dërguam SMS në',otp_err:'Kod i gabuar. Demo: 1234',otp_change:'Ndrysho numrin',confirmed:'Termini juaj është konfirmuar.',reminder:'Do të merrni kujtesë 1 orë para.',email_sent:'Konfirmimi u dërgua te',cancel_policy:'Anulim deri 2 orë para terminit',pending_msg:'Rezervimi është marrë.',salon_contact:"Saloni do t'ju kontaktojë për konfirmim."}};
 let curLang='МК';
 function t(k){return T[curLang][k]||T['МК'][k]||k}
-function applyLang(){var m={'nav-about':t('nav_about'),'nav-services':t('nav_services'),'nav-contact':t('nav_contact'),'hero-tagline':t('tagline'),'hero-subtitle':t('subtitle'),'cta-main':t('cta'),'open-label':t('open')};Object.keys(m).forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=m[id];});}
+function applyLang(){var m={'nav-about':t('nav_about'),'nav-services':t('nav_services'),'nav-contact':t('nav_contact'),'cta-main':t('cta'),'open-label':t('open')};Object.keys(m).forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=m[id];});}
 function setLang(l){curLang=l;document.getElementById('lang-mk').style.background=l==='МК'?P:'transparent';document.getElementById('lang-mk').style.color=l==='МК'?'#fff':'#999';document.getElementById('lang-sq').style.background=l==='SQ'?P:'transparent';document.getElementById('lang-sq').style.color=l==='SQ'?'#fff':'#999';applyLang();}
 function openLogin(){const el=document.getElementById('login-ov');el.style.display='flex';el.style.alignItems='center';el.style.justifyContent='center'}
 function doLogin(){const u=document.getElementById('lu').value,pw=document.getElementById('lp').value;if(u==='admin'&&pw==='1234'){document.getElementById('login-ov').style.display='none';document.getElementById('site-view').style.display='none';const av=document.getElementById('admin-view');av.style.display='flex';av.style.flexDirection='column';document.getElementById('brand-tag').textContent='Администраторски панел';document.getElementById('admin-btn').style.display='none';document.getElementById('logout-btn').style.display='block';renderAptList();subscribeBookings();}else{document.getElementById('lerr').style.display='block'}}
