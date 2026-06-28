@@ -28,6 +28,11 @@ function isRateLimited(ip) {
 }
 
 export default async function handler(req) {
+  // Debug: verify env vars are present
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
+    return new Response(JSON.stringify({ error: 'Missing SUPABASE_URL or SUPABASE_ANON_KEY env vars' }), { status: 500 });
+  }
+
   if (req.method === 'OPTIONS') {
     return new Response(null, {
       headers: {
