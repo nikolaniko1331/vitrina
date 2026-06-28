@@ -289,7 +289,8 @@ function otpVerify(){
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({slug:slug,service_id:bkSvc.id,staff_id:bkStaff,starts_at:startDT,ends_at:endDT,client_name:bkName,client_phone:bkPhone,client_email:bkEmail,note:bkNote})
-  }).then(r=>r.json().then(data=>{
+  }).then(async r=>{
+    const data=await r.json();
     if(!r.ok||data.error){
       const errEl=document.getElementById('otp-err');
       if(errEl){errEl.textContent=data.error||('Грешка '+r.status);errEl.style.display='block';}
