@@ -118,6 +118,18 @@ export default async function handler(req) {
     await sendConfirmationEmail(booking, biz, client_email, client_name, starts_at);
   }
 
+  // Send push notification to all subscribed devices for this business
+  const baseUrl = process.env.APP_URL || 'https://vitrina-fze5.vercel.app';
+  fetch(`${baseUrl}/api/push-send`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      business_id: biz.id,
+      title: `📅 Нова резервација — ${biz.name}`,
+      body: `${client_name} · ${new Date(starts_at).toLocaleString('mk-MK', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`,
+    }),
+  }).catch(() => {});
+
   return new Response(JSON.stringify({
     booking_id: booking.id,
     status: booking.status,
