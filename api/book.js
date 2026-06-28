@@ -57,7 +57,7 @@ export default async function handler(req) {
 
   const body = await req.json();
   const { slug, service_id, staff_id, starts_at, ends_at,
-          client_name, client_phone, client_email, note } = body;
+          client_name, client_phone, client_email, note, reference_image_url } = body;
 
   if (!slug || !starts_at || !client_name || !client_phone) {
     return new Response(JSON.stringify({ error: 'missing required fields' }), { status: 400 });
@@ -109,6 +109,7 @@ export default async function handler(req) {
       client_phone,
       client_email: client_email || null,
       note,
+      reference_image_url: reference_image_url || null,
       status: biz.config.approvalMode ? 'pending' : 'confirmed',
     })
     .select()
