@@ -1,4 +1,4 @@
-const CACHE = 'vitrina-v1';
+const CACHE = 'vitrina-v2';
 const OFFLINE = ['/'];
 
 self.addEventListener('install', e => {
