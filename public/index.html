@@ -58,7 +58,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       <button onclick="openSched()" style="padding:14px 10px;background:#fff;border-radius:10px;border:1px solid #ede5ee;cursor:pointer;text-align:left;font-family:'Inter',sans-serif"><div style="margin-bottom:6px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--P)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div style="font-size:12px;font-weight:500;color:#1A0F1B">Распоред</div><div style="font-size:10px;color:#bbb">Блокирај термини</div></button>
       <button onclick="openAdminBook()" style="padding:14px 10px;background:#fff;border-radius:10px;border:1px solid #ede5ee;cursor:pointer;text-align:left;font-family:'Inter',sans-serif"><div style="margin-bottom:6px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--P)" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div style="font-size:12px;font-weight:500;color:#1A0F1B">Резервирај</div><div style="font-size:10px;color:#bbb">Рачна резервација</div></button>
     </div>
-    <div style="padding:0 16px 8px"><div style="display:flex;background:#f5eff6;border-radius:8px;padding:2px"><button id="tab-today" onclick="setTab('today');clearNewBadge()" style="flex:1;padding:6px;border-radius:6px;border:none;background:#fff;font-size:11px;font-weight:500;color:#1A0F1B;cursor:pointer;font-family:'Inter',sans-serif">Денес</button><button id="tab-tmr" onclick="setTab('tmr');clearNewBadge()" style="flex:1;padding:6px;border-radius:6px;border:none;background:transparent;font-size:11px;color:#999;cursor:pointer;font-family:'Inter',sans-serif">Утре</button><button id="tab-week" onclick="setTab('week');clearNewBadge()" style="flex:1;padding:6px;border-radius:6px;border:none;background:transparent;font-size:11px;color:#999;cursor:pointer;font-family:'Inter',sans-serif">Оваа недела</button></div></div>
+    <div style="padding:0 16px 8px"><div style="display:flex;background:#f5eff6;border-radius:8px;padding:2px"><button id="tab-upcoming" onclick="setTab('upcoming');clearNewBadge()" style="flex:1;padding:6px;border-radius:6px;border:none;background:#fff;font-size:11px;font-weight:500;color:#1A0F1B;cursor:pointer;font-family:'Inter',sans-serif">Предстојни</button><button id="tab-today" onclick="setTab('today');clearNewBadge()" style="flex:1;padding:6px;border-radius:6px;border:none;background:transparent;font-size:11px;color:#999;cursor:pointer;font-family:'Inter',sans-serif">Денес</button><button id="tab-tmr" onclick="setTab('tmr');clearNewBadge()" style="flex:1;padding:6px;border-radius:6px;border:none;background:transparent;font-size:11px;color:#999;cursor:pointer;font-family:'Inter',sans-serif">Утре</button><button id="tab-week" onclick="setTab('week');clearNewBadge()" style="flex:1;padding:6px;border-radius:6px;border:none;background:transparent;font-size:11px;color:#999;cursor:pointer;font-family:'Inter',sans-serif">Недела</button></div></div>
     <div id="apt-list" style="padding:0 16px 16px;display:flex;flex-direction:column;gap:8px"></div>
   </div>
   <div id="login-ov" onclick="this.style.display='none'" style="display:none;position:absolute;inset:0;background:rgba(26,15,27,.65);z-index:50;align-items:center;justify-content:center"><div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:24px;width:300px;margin:0 20px"><div style="font-family:'Playfair Display',serif;font-size:18px;color:#1A0F1B;margin-bottom:4px">Admin пристап</div><div style="font-size:11px;color:#bbb;margin-bottom:18px"><span id="login-biz-name">Витрина · Управување</span></div><input id="lu" type="text" placeholder="Корисничко ime" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px;margin-bottom:8px;font-family:'Inter',sans-serif;outline:none"/><input id="lp" type="password" placeholder="Лозинка" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px;margin-bottom:14px;font-family:'Inter',sans-serif;outline:none"/><div id="lerr" style="display:none;font-size:11px;color:#c0392b;margin-bottom:8px">Погрешни податоци</div><button onclick="doLogin()" style="width:100%;padding:12px;background:var(--P);border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif">Влези</button><button onclick="document.getElementById('login-ov').style.display='none'" style="width:100%;padding:8px;border:none;background:transparent;color:#bbb;font-size:12px;cursor:pointer;margin-top:6px;font-family:'Inter',sans-serif">Откажи</button></div></div>
@@ -174,7 +174,7 @@ async function loadCFG(){
 }
 const SLOTS=['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30'];
 const MO=['Јануари','Февруари','Март','Април','Мај','Јуни','Јули','Август','Септември','Октомври','Ноември','Декември'];
-let approvalMode=false,curTab='today',staffBlocks={};
+let approvalMode=false,curTab='upcoming',staffBlocks={};
 let bookings=[{id:1,name:'Ана Петровска',phone:'+389 70 111 222',svc:'Фенирање',staff:1,date:'2026-06-27',time:'10:00',dur:30,status:'confirmed'},{id:2,name:'Марија Јовановска',phone:'+389 71 333 444',svc:'Боење (целосно)',staff:2,date:'2026-06-27',time:'11:00',dur:120,status:'pending'},{id:3,name:'Лена Стефанова',phone:'+389 72 555 666',svc:'Маникир',staff:3,date:'2026-06-27',time:'14:00',dur:60,status:'confirmed'}];
 let nid=10,bkSvc=null,bkDate=null,bkSlot=null,bkStaff=null,bkStep=1,bkCY,bkCM,bkName='',bkPhone='',bkEmail='',bkNote='',bkBookingId=null,newBookingCount=0,bkExtras=[];
 let schedStaff=1,schedCY,schedCM,schedDay=null,abSvc=null,abDate=null,abSlot=null,abStaff=null,abStep=1,abCY,abCM;
@@ -198,10 +198,10 @@ function t(k){return T[curLang][k]||T['МК'][k]||k}
 function applyLang(){var m={'nav-about':t('nav_about'),'nav-services':t('nav_services'),'nav-contact':t('nav_contact'),'cta-main':t('cta'),'open-label':t('open')};Object.keys(m).forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=m[id];});}
 function setLang(l){curLang=l;document.getElementById('lang-mk').style.background=l==='МК'?P:'transparent';document.getElementById('lang-mk').style.color=l==='МК'?'#fff':'#999';document.getElementById('lang-sq').style.background=l==='SQ'?P:'transparent';document.getElementById('lang-sq').style.color=l==='SQ'?'#fff':'#999';applyLang();}
 function openLogin(){const el=document.getElementById('login-ov');el.style.display='flex';el.style.alignItems='center';el.style.justifyContent='center'}
-function doLogin(){const u=document.getElementById('lu').value,pw=document.getElementById('lp').value;if(u==='admin'&&pw==='1234'){document.getElementById('login-ov').style.display='none';document.getElementById('site-view').style.display='none';const av=document.getElementById('admin-view');av.style.display='flex';av.style.flexDirection='column';document.getElementById('brand-tag').textContent='Администраторски панел';document.getElementById('admin-btn').style.display='none';document.getElementById('logout-btn').style.display='block';renderAptList();subscribeBookings();}else{document.getElementById('lerr').style.display='block'}}
+function doLogin(){const u=document.getElementById('lu').value,pw=document.getElementById('lp').value;if(u==='admin'&&pw==='1234'){document.getElementById('login-ov').style.display='none';document.getElementById('site-view').style.display='none';const av=document.getElementById('admin-view');av.style.display='flex';av.style.flexDirection='column';document.getElementById('brand-tag').textContent='Администраторски панел';document.getElementById('admin-btn').style.display='none';document.getElementById('logout-btn').style.display='block';setTab('upcoming');subscribeBookings();}else{document.getElementById('lerr').style.display='block'}}
 function showSite(){document.getElementById('admin-view').style.display='none';const sv=document.getElementById('site-view');sv.style.display='flex';sv.style.flexDirection='column';document.getElementById('brand-tag').textContent=(CFG.subtitle||'')+ ' · '+(CFG.city||'');document.getElementById('admin-btn').style.display='flex';document.getElementById('logout-btn').style.display='none'}
 function toggleApproval(){approvalMode=!approvalMode;document.getElementById('apr-tog').style.background=approvalMode?P:'#ccc';document.getElementById('apr-knob').style.left=approvalMode?'20px':'2px'}
-function setTab(t){curTab=t;['today','tmr','week'].forEach(x=>{const el=document.getElementById('tab-'+x);if(el){el.style.background=x===t?'#fff':'transparent';el.style.color=x===t?DK:'#999';el.style.fontWeight=x===t?'500':'400'}});renderAptList()}
+function setTab(t){curTab=t;['upcoming','today','tmr','week'].forEach(x=>{const el=document.getElementById('tab-'+x);if(el){el.style.background=x===t?'#fff':'transparent';el.style.color=x===t?DK:'#999';el.style.fontWeight=x===t?'500':'400'}});renderAptList()}
 function aptCard(b){
   const st=STAFF.find(s=>s.id===b.staff_id)||{color:'#888',initials:'?',name:'?'};
   const sc=b.status==='confirmed'?'#4CAF50':'#FF9800';
@@ -222,15 +222,15 @@ function renderAptList(){
     return;
   }
   el.innerHTML='<div style="text-align:center;padding:24px 0;color:#bbb;font-size:12px">Вчитување...</div>';
-  const dateFrom=keys[0]+'T00:00:00';
-  const dateTo=keys[keys.length-1]+'T23:59:59';
-  sb.from('bookings')
-    .select('*')
-    .eq('business_id',CFG.id)
-    .gte('starts_at',dateFrom)
-    .lte('starts_at',dateTo)
-    .neq('status','cancelled')
-    .order('starts_at')
+  const today=fd(new Date());
+  let q=sb.from('bookings').select('*').eq('business_id',CFG.id).neq('status','cancelled').order('starts_at');
+  if(curTab==='upcoming'){
+    q=q.gte('starts_at',today+'T00:00:00');
+  }else{
+    const keys=tabDates(curTab);
+    q=q.gte('starts_at',keys[0]+'T00:00:00').lte('starts_at',keys[keys.length-1]+'T23:59:59');
+  }
+  q
     .then(({data,error})=>{
       if(error){el.innerHTML='<div style="text-align:center;padding:24px 0;color:#bbb;font-size:12px">Грешка при вчитување</div>';return;}
       dbBookings=data||[];
