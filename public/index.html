@@ -102,7 +102,7 @@ async function loadCFG(){
     P=CFG.primaryColor||P;PT=CFG.primaryTint||PT;A=CFG.accentColor||A;DK=CFG.darkColor||DK;
     const dc=document.getElementById('dyn-css');if(dc)dc.textContent=`:root{--P:${P};--PT:${PT};--A:${A};--DK:${DK}}`;
     const hs=document.getElementById('hero-section');
-    if(hs&&CFG.primaryColor)hs.style.background='linear-gradient(135deg,'+DK+' 0%,'+P+'99 40%,'+P+' 70%,'+A+'44 100%)';
+    if(hs&&CFG.primaryColor)hs.style.background='linear-gradient(160deg,'+DK+' 0%,'+P+' 55%,'+A+' 100%)';
     STAFF=(data.staff||[]).map(s=>({...s,initials:initials(s.name)}));
     SVCS=(data.services||[]).map(s=>({
       ...s,
