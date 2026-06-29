@@ -240,7 +240,7 @@ async function doLogin(){
   const sb=getSupabase();
   if(!sb){errEl.textContent='Нема конекција';errEl.style.display='block';btn.disabled=false;btn.textContent='Влези';return;}
   const {data,error}=await sb.auth.signInWithPassword({email,password:pw});
-  if(error||!data.user){errEl.textContent='Погрешен email или лозинка';errEl.style.display='block';btn.disabled=false;btn.textContent='Влези';return;}
+  if(error||!data.user){errEl.textContent=(error?.message||'Погрешен email или лозинка');errEl.style.display='block';btn.disabled=false;btn.textContent='Влези';return;}
   // Verify this user owns a business and get it
   const {data:biz}=await sb.from('businesses').select('id,slug,name,config').eq('owner_id',data.user.id).single();
   if(!biz){await sb.auth.signOut();errEl.textContent='Нема бизнис поврзан со овој акаунт';errEl.style.display='block';btn.disabled=false;btn.textContent='Влези';return;}
