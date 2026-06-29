@@ -84,7 +84,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 // ── Dynamic config from Vitrina API ──────────────────────────────────────────
 const slug = (new URLSearchParams(location.search).get('s')) || 'salon-mia';
 const SUPA_URL='https://zehfmiadttzekgeogysb.supabase.co';
-const SUPA_KEY='sb_publishable_eLhXVOU3ObdyRTFHIJ7PNg_ueZuBHP9';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplaGZtaWFkdHR6ZWtnZW9neXNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI1NjgwNTQsImV4cCI6MjA5ODE0NDA1NH0.-ZI66-VIwgQEMF9JJ3NXARNE4-a024NM3EmWEpT_HZE';
 let supaClient=null;
 function getSupabase(){if(!supaClient&&window.supabase)supaClient=window.supabase.createClient(SUPA_URL,SUPA_KEY);return supaClient;}
 let CFG={primaryColor:'#6B3F6E',primaryTint:'#F3EBF4',accentColor:'#C9A96E',darkColor:'#1A0F1B',approvalMode:false};
