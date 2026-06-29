@@ -1,5 +1,12 @@
 {
   "version": 2,
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [{ "type": "query", "key": "s" }],
+      "destination": "/api/widget"
+    }
+  ],
   "crons": [
     {
       "path": "/api/push-reminder",
